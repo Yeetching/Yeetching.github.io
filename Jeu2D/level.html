@@ -1,0 +1,990 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Level</title>
+<style>
+canvas{
+	border:2px black solid;
+	background-color:turquoise;
+	margin:auto;
+	display:block;
+}
+
+</style>
+</head>
+
+<body>
+<canvas id="monCanvas"></canvas>
+
+<script>
+
+var canvas=document.getElementById("monCanvas")
+var ctx=canvas.getContext("2d")
+canvas.width=600
+canvas.height=700
+
+var character=new Image()
+character.src="mario.png"
+
+var slow=new Image()
+slow.src="flower.png"
+
+var mega=new Image()
+mega.src="megaMush.png"
+
+var speed=new Image()
+speed.src="mush.png"
+
+var end=new Image()
+end.src="egg.png"
+
+var end2=new Image()
+end2.src="redEgg.png"
+
+var finish=new Image()
+finish.src="exit.png"
+
+var finish2=new Image()
+finish2.src="altEnd.png"
+
+var upSound=new Audio()
+upSound.src="up.wav"
+
+var downSound=new Audio()
+downSound.src="down.wav"
+
+var music=new Audio()
+music.src="themeLevel.mp3"
+
+var spawn={
+    x:0,
+    y:0,
+    w:150,
+    h:120,
+    color:"pink"
+}
+
+var checkPoint1={
+    x:470,
+    y:135,
+    w:130,
+    h:180,
+    color:"pink",
+}
+
+var checkPoint2={
+    x:120,
+    y:440,
+    w:160,
+    h:125,
+    color:"pink",
+}
+
+var player={
+    x:50,
+    y:50,
+    w:50,
+    h:50,
+    speed:4,
+}
+
+var giga={
+    x:10,
+    y:200,
+    w:40,
+    h:40,
+}
+
+var giga2={
+    x:350,
+    y:516,
+    w:35,
+    h:35,
+}
+
+var giga3={
+    x:536,
+    y:425,
+    w:40,
+    h:40,
+}
+
+var egg={
+    x:410,
+    y:360,
+    w:40,
+    h:40,
+}
+
+var mushroom={
+    x:362,
+    y:260,
+    w:40,
+    h:40,
+}
+
+var star={
+    x:362,
+    y:162,
+    w:40,
+    h:40,
+}
+
+var alt={
+    x:295,
+    y:340,
+    w:40,
+    h:40,
+}
+
+var wall={
+    x:0,
+    y:120,
+    w:475,
+    h:15,
+    color:"black",
+}
+
+var wall1={
+    x:125,
+    y:315,
+    w:475,
+    h:15,
+    color:"black",
+}
+
+var wall2={
+    x:380,
+    y:330,
+    w:15,
+    h:120,
+    color:"black",
+}
+
+var death1={
+    x:285,
+    y:0,
+    w:15,
+    h:30,
+    color:"red",
+}
+
+var death2={
+    x:285,
+    y:90,
+    w:15,
+    h:30,
+    color:"red",
+}
+
+var death3={
+    x:460,
+    y:70,
+    w:15,
+    h:50,
+    color:"red",
+}
+
+var death4={
+    x:0,
+    y:135,
+    w:475,
+    h:15,
+    color:"red",
+}
+
+var death5={
+    x:375,
+    y:215,
+    w:15,
+    h:30,
+    color:"red",
+}
+
+var death6={
+    x:245,
+    y:150,
+    w:15,
+    h:80,
+    color:"red",
+}
+
+var death7={
+    x:125,
+    y:300,
+    w:175,
+    h:15,
+    color:"red",
+}
+
+var death8={
+    x:125,
+    y:250,
+    w:15,
+    h:50,
+    color:"red",
+}
+
+var death9={
+    x:0,
+    y:300,
+    w:55,
+    h:15,
+    color:"red",
+}
+
+var death10={
+    x:0,
+    y:550,
+    w:120,
+    h:15,
+    color:"red",
+}
+
+var death11={
+    x:80,
+    y:430,
+    w:300,
+    h:15,
+    color:"red",
+}
+
+var death12={
+    x:365,
+    y:330,
+    w:15,
+    h:100,
+    color:"red",
+}
+
+var death13={
+    x:255,
+    y:330,
+    w:15,
+    h:40,
+    color:"red",
+}
+
+var death14={
+    x:150,
+    y:400,
+    w:15,
+    h:40,
+    color:"red",
+}
+
+var death15={
+    x:280,
+    y:445,
+    w:100,
+    h:5,
+    color:"red",
+}
+
+var death16={
+    x:280,
+    y:550,
+    w:320,
+    h:15,
+    color:"red",
+}
+
+var death17={
+    x:380,
+    y:436,
+    w:130,
+    h:15,
+    color:"red",
+}
+
+var death18={
+    x:598,
+    y:330,
+    w:2,
+    h:220,
+    color:"red",
+}
+
+var death19={
+    x:395,
+    y:330,
+    w:203,
+    h:2,
+    color:"red",
+}
+
+var death20={
+    x:385,
+    y:565,
+    w:15,
+    h:41,
+    color:"red",
+}
+
+var death21={
+    x:385,
+    y:659,
+    w:15,
+    h:41,
+    color:"red",
+}
+
+var exit={
+    x:-200,
+    y:580,
+    w:100,
+    h:100,
+}
+
+var exit2={
+    x:-200,
+    y:570,
+    w:200,
+    h:120,
+}
+
+var keyDown={}
+
+function draw(){
+
+    ctx.fillStyle=spawn.color
+    ctx.fillRect(spawn.x, spawn.y, spawn.w, spawn.h,)
+
+    ctx.fillStyle=checkPoint1.color
+    ctx.fillRect(checkPoint1.x, checkPoint1.y, checkPoint1.w, checkPoint1.h,)
+
+    ctx.fillStyle=checkPoint2.color
+    ctx.fillRect(checkPoint2.x, checkPoint2.y, checkPoint2.w, checkPoint2.h,)
+
+    ctx.drawImage(character, player.x, player.y, player.w, player.h,)
+
+    ctx.drawImage(mega, giga.x, giga.y, giga.w, giga.h,)
+
+    ctx.drawImage(mega, giga.x, giga.y, giga.w, giga.h,)
+
+    ctx.drawImage(mega, giga2.x, giga2.y, giga2.w, giga2.h,)
+
+    ctx.drawImage(mega, giga3.x, giga3.y, giga3.w, giga3.h,)
+
+    ctx.drawImage(speed, mushroom.x, mushroom.y, mushroom.w, mushroom.h,)
+
+    ctx.drawImage(end, egg.x, egg.y, egg.w, egg.h,)
+
+    ctx.drawImage(slow, star.x, star.y, star.w, star.h,)
+
+    ctx.drawImage(end2, alt.x, alt.y, alt.w, alt.h,)
+
+    ctx.drawImage(finish, exit.x, exit.y, exit.w, exit.h,)
+
+    ctx.drawImage(finish2, exit2.x, exit2.y, exit2.w, exit2.h,)
+
+    ctx.fillStyle=wall.color
+    ctx.fillRect(wall.x, wall.y, wall.w, wall.h,)
+
+    ctx.fillStyle=wall1.color
+    ctx.fillRect(wall1.x, wall1.y, wall1.w, wall1.h,)
+
+    ctx.fillStyle=wall2.color
+    ctx.fillRect(wall2.x, wall2.y, wall2.w, wall2.h,)
+
+    ctx.fillStyle=death1.color
+    ctx.fillRect(death1.x, death1.y, death1.w, death1.h,)
+
+    ctx.fillStyle=death2.color
+    ctx.fillRect(death2.x, death2.y, death2.w, death2.h,)
+
+    ctx.fillStyle=death3.color
+    ctx.fillRect(death3.x, death3.y, death3.w, death3.h,)
+
+    ctx.fillStyle=death4.color
+    ctx.fillRect(death4.x, death4.y, death4.w, death4.h,)
+
+    ctx.fillStyle=death5.color
+    ctx.fillRect(death5.x, death5.y, death5.w, death5.h,)
+
+    ctx.fillStyle=death6.color
+    ctx.fillRect(death6.x, death6.y, death6.w, death6.h,)
+
+    ctx.fillStyle=death7.color
+    ctx.fillRect(death7.x, death7.y, death7.w, death7.h,)
+
+    ctx.fillStyle=death8.color
+    ctx.fillRect(death8.x, death8.y, death8.w, death8.h,)
+
+    ctx.fillStyle=death9.color
+    ctx.fillRect(death9.x, death9.y, death9.w, death9.h,)
+
+    ctx.fillStyle=death10.color
+    ctx.fillRect(death10.x, death10.y, death10.w, death10.h,)
+
+    ctx.fillStyle=death11.color
+    ctx.fillRect(death11.x, death11.y, death11.w, death11.h,)
+
+    ctx.fillStyle=death12.color
+    ctx.fillRect(death12.x, death12.y, death12.w, death12.h,)
+
+    ctx.fillStyle=death13.color
+    ctx.fillRect(death13.x, death13.y, death13.w, death13.h,)
+
+    ctx.fillStyle=death14.color
+    ctx.fillRect(death14.x, death14.y, death14.w, death14.h,)
+
+    ctx.fillStyle=death15.color
+    ctx.fillRect(death15.x, death15.y, death15.w, death15.h,)
+
+    ctx.fillStyle=death16.color
+    ctx.fillRect(death16.x, death16.y, death16.w, death16.h,)
+
+    ctx.fillStyle=death17.color
+    ctx.fillRect(death17.x, death17.y, death17.w, death17.h,)
+
+    ctx.fillStyle=death18.color
+    ctx.fillRect(death18.x, death18.y, death18.w, death18.h,)
+
+    ctx.fillStyle=death19.color
+    ctx.fillRect(death19.x, death19.y, death19.w, death19.h,)
+
+    ctx.fillStyle=death20.color
+    ctx.fillRect(death20.x, death20.y, death20.w, death20.h,)
+
+    ctx.fillStyle=death21.color
+    ctx.fillRect(death21.x, death21.y, death21.w, death21.h,)
+}
+
+document.addEventListener("keydown", function(e){
+    keyDown[e.keyCode]=true
+    console.log(keyDown)
+})
+
+document.addEventListener("keyup", function(e){
+    delete keyDown[e.keyCode]
+    console.log(keyDown)
+})
+
+function clavier(){
+    if (65 in keyDown && player.x>0){
+        player.x-=player.speed
+    }
+
+    if (68 in keyDown && player.x<canvas.width-player.w){
+        player.x+=player.speed
+    }
+
+    if (87 in keyDown && player.y>0){
+        player.y-=player.speed
+    }
+
+    if (83 in keyDown && player.y<canvas.height-player.h){
+        player.y+=player.speed
+    }
+
+    mur(player,wall)
+    mur1(player,wall1)
+    mur2(player,wall2)
+}
+
+function collision(a,b){
+    if(a.x<b.x+b.w && a.y+a.h>b.y && a.y<b.y+b.h && a.x+a.w>b.x){
+        return(true)
+    }
+}
+
+function mur(player,wall){
+    if(collision(player,wall)){
+        if(65 in keyDown || 68 in keyDown){
+            if(player.x<wall.x+wall.w/2){
+                player.x-=player.speed
+            }else{
+                player.x+=player.speed
+            }
+        }
+
+        if(83 in keyDown || 87 in keyDown){
+            if(player.y<wall.y+wall.h/2){
+                player.y-=player.speed
+            }else{
+                player.y+=player.speed
+            }
+        }
+    }
+}
+
+function mur1(player,wall1){
+    if(collision(player,wall1)){
+        if(65 in keyDown || 68 in keyDown){
+            if(player.x<wall1.x+wall1.w/2){
+                player.x-=player.speed
+            }else{
+                player.x+=player.speed
+            }
+        }
+
+        if(83 in keyDown || 87 in keyDown){
+            if(player.y<wall1.y+wall1.h/2){
+                player.y-=player.speed
+            }else{
+                player.y+=player.speed
+            }
+        }
+    }
+}
+
+function mur2(player,wall2){
+    if(collision(player,wall2)){
+        if(65 in keyDown || 68 in keyDown){
+            if(player.x<wall2.x+wall2.w/2){
+                player.x-=player.speed
+            }else{
+                player.x+=player.speed
+            }
+        }
+
+        if(83 in keyDown || 87 in keyDown){
+            if(player.y<wall2.y+wall2.h/2){
+                player.y-=player.speed
+            }else{
+                player.y+=player.speed
+            }
+        }
+    }
+}
+
+function powerup(){
+    if(collision(player,giga)){
+        giga.x=-200
+        player.w=75
+        player.h=75
+        downSound.play()
+    }
+
+    if(collision(player,giga2)){
+        giga2.x=-200
+        player.w=75
+        player.h=75
+        downSound.play()
+    }
+
+    if(collision(player,giga3)){
+        giga3.x=-200
+        player.w=75
+        player.h=75
+        downSound.play()
+    }
+
+    if(collision(player,mushroom)){
+        mushroom.x=-200
+        player.speed=8
+        downSound.play()
+    }
+
+    if(collision(player,star)){
+        star.x=-200
+        player.speed=2
+        upSound.play()
+    }
+    
+    if(collision(player,egg)){
+        egg.x=-200
+        exit.x=20
+        upSound.play()
+    }
+
+    if (collision(player,alt)){
+        alt.x=-200
+        exit2.x=420
+        upSound.play()
+    }
+
+    if(collision(player,exit)){
+        window.location.href="menu.html"
+    }
+
+    if(collision(player,exit2)){
+        window.location.href="altMenu.html"
+    }
+
+} 
+
+function bonus(){
+    ctx.font="12px Verdana"
+    ctx.fillStyle="black"
+    ctx.fillText("Bonus --> (allez dans le château de",20,362)
+    ctx.fillText("peach ensuite!)",80,377)
+}
+
+function checkDeath(){
+    if(collision(player,death1)){
+        player.x=50
+        player.y=50
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death2)){
+        player.x=50
+        player.y=50
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death3)){
+        player.x=50
+        player.y=50
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death4)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death5)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death6)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death7)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death8)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death9)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death10)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death11)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death12)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death13)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death14)){
+        player.x=510
+        player.y=180
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death15)){
+        player.x=180
+        player.y=480
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death16)){
+        player.x=180
+        player.y=480
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death17)){
+        player.x=180
+        player.y=480
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death18)){
+        player.x=180
+        player.y=480
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death19)){
+        player.x=180
+        player.y=480
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death20)){
+        player.x=180
+        player.y=480
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+
+    if(collision(player,death21)){
+        player.x=180
+        player.y=480
+        player.speed=4
+        player.w=50
+        player.h=50
+        mushroom.x=362
+        giga.x=10
+        star.x=362
+        egg.x=410
+        exit.x=-200
+        giga2.x=350
+        giga3.x=536
+        alt.x=295
+        exit2.x=-200
+    }
+}
+
+function gameLoop(){
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+	requestAnimationFrame(gameLoop)
+    powerup()
+    clavier()
+    draw()
+    checkDeath()
+    bonus()
+    music.play()
+}
+
+gameLoop()
+
+</script>
+</body>
+</html>
